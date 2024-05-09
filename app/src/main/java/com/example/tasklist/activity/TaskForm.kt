@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
+import java.util.UUID
 
 class TaskForm : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,9 @@ class TaskForm : AppCompatActivity() {
 
 
 
+    //CRIAR FUNÇÃO PARA ALTERAR JSON QUANDO CHECKED FOR ALTERADO PARA TRUE (for loop percorrendo a lista até encontrar o objeto que tem o id igual ao solicitado quando clicou
+
+
     // adiciona funcionalidade ao botão de Salvar
     private fun configSaveButton() {
         val btn = findViewById<Button>(R.id.submit_button)
@@ -41,7 +45,7 @@ class TaskForm : AppCompatActivity() {
             val name = name_field.text.toString()
             val checked = false
 
-            val task = Task(name, checked)
+            val task = Task(name, checked, UUID.randomUUID())
 
 
             saveData(task)
