@@ -1,7 +1,5 @@
 package com.example.tasklist.activity
 
-import com.example.tasklist.model.Task
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -11,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tasklist.R
+import com.example.tasklist.model.Task
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.io.FileWriter
@@ -32,6 +30,9 @@ class TaskForm : AppCompatActivity() {
         configSaveButton()
     }
 
+
+
+    // adiciona funcionalidade ao botão de Salvar
     private fun configSaveButton() {
         val btn = findViewById<Button>(R.id.submit_button)
         val name_field = findViewById<EditText>(R.id.submit_taskName)

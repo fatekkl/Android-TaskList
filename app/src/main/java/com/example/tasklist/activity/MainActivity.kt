@@ -15,8 +15,6 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
 
 
-    // CRIAR TASKS NO BANCO DE DADOS
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    // transforma a string JSON em uma List com o items do tipo Task
     fun parseJson(input: String): List<Task> {
         if (input.isEmpty()) {
             return emptyList()
@@ -43,6 +42,8 @@ class MainActivity : AppCompatActivity() {
         return gson.fromJson(input, type)
     }
 
+
+    // captura dados do arquivo .JSON
     private fun getData(): String {
         val tasksFile = File(filesDir, "tasks.json")
 
@@ -50,15 +51,19 @@ class MainActivity : AppCompatActivity() {
 
             return tasksFile.readText()
         }
-        return "File dont exist"
+        return "[]"
     }
 
+
+
+    // configura recycler view  e o adapter para puxar do arquivo JSON
     private fun configRecyclerView() {
         val adapter = Adapter(context = this, tasks = parseJson(getData()) )
         val recyclerView = findViewById<RecyclerView>(R.id.activity_recyclerView)
         recyclerView.adapter = adapter
     }
 
+    //adiciona funciolidade ao arquivo JSON
     private fun configFab() {
         val fab = findViewById<FloatingActionButton>(R.id.activity_fab)
 
