@@ -18,7 +18,9 @@ import java.io.IOException
 import java.util.UUID
 
 class TaskForm : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_task_form)
@@ -27,22 +29,19 @@ class TaskForm : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         configSaveButton()
     }
 
 
 
-    //CRIAR FUNÇÃO PARA ALTERAR JSON QUANDO CHECKED FOR ALTERADO PARA TRUE (for loop percorrendo a lista até encontrar o objeto que tem o id igual ao solicitado quando clicou
-
 
     // adiciona funcionalidade ao botão de Salvar
     private fun configSaveButton() {
         val btn = findViewById<Button>(R.id.submit_button)
-        val name_field = findViewById<EditText>(R.id.submit_taskName)
+        val nameField = findViewById<EditText>(R.id.submit_taskName)
 
         btn.setOnClickListener {
-            val name = name_field.text.toString()
+            val name = nameField.text.toString()
             val checked = false
 
             val task = Task(name, checked, UUID.randomUUID())
@@ -79,6 +78,8 @@ class TaskForm : AppCompatActivity() {
 
         Log.i("tasks_info", jsonTasks)
     }
+
+
 
 
 

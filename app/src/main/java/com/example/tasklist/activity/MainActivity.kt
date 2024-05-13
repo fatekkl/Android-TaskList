@@ -3,6 +3,9 @@ package com.example.tasklist.activity
 import com.example.tasklist.model.Task
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
+import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
@@ -20,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         configRecyclerView()
         configFab()
+
+
     }
 
 
@@ -30,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
 
     // transforma a string JSON em uma List com o items do tipo Task
-    fun parseJson(input: String): List<Task> {
+    private fun parseJson(input: String): List<Task> {
         if (input.isEmpty()) {
             return emptyList()
         }
@@ -62,6 +67,9 @@ class MainActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.activity_recyclerView)
         recyclerView.adapter = adapter
     }
+
+
+
 
     //adiciona funciolidade ao arquivo JSON
     private fun configFab() {

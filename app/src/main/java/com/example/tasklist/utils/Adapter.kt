@@ -2,27 +2,65 @@ package com.example.tasklist.utils
 
 import com.example.tasklist.model.Task
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.File
 
-class Adapter(val tasks: List<Task>, private val context: Context): RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(val tasks: List<Task>, private val context: Context) :
+    RecyclerView.Adapter<Adapter.ViewHolder>() {
 
 
-    class ViewHolder (view: View): RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, context: Context) : RecyclerView.ViewHolder(view) {
 
 
-        fun bind(task: Task) {
+        fun bind(task: Task, context: Context) {
             val name = itemView.findViewById<TextView>(R.id.task_name)
             val checked = itemView.findViewById<CheckBox>(R.id.task_checkbox)
+            val deleteButton = itemView.findViewById<Button>(R.id.task_button)
 
             name?.text = task.name
             checked?.isChecked = task.checked
+
+            deleteButton.setOnClickListener {
+
+                val id = task.id
+
+                val taskFiles = File(context.filesDir, "tasks.json")
+                val gson = Gson()
+
+                val tasksJson = taskFiles.readText()
+
+                val tasks: MutableList<Task> = gson.fromJson(tasksJson, object : TypeToken<MutableList<Task>>() {}.type)
+
+
+                val index = tasks.indexOfFirst { it.id == id }
+
+
+                if (index != -1) {
+                    tasks.removeAt(index)
+                }
+
+                val newTasks = gson.toJson(tasks)
+
+
+                Log.i("tasks_id", index.toString())
+
+
+            }
+
+
         }
+
+
 
     }
 
@@ -32,7 +70,7 @@ class Adapter(val tasks: List<Task>, private val context: Context): RecyclerView
         val view = inflater.inflate(R.layout.task_item, parent, false)
 
 
-        return ViewHolder(view)
+        return ViewHolder(view, context)
     }
 
     override fun getItemCount(): Int = tasks.size
@@ -40,7 +78,7 @@ class Adapter(val tasks: List<Task>, private val context: Context): RecyclerView
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val task = tasks[position]
 
-        holder.bind(task)
+        holder.bind(task, context)
     }
 
 
