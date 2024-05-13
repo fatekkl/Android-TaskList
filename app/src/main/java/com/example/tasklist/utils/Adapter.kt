@@ -14,8 +14,10 @@ import com.example.tasklist.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 
-class Adapter(val tasks: List<Task>, private val context: Context) :
+class Adapter(val tasks: MutableList<Task>, private val context: Context) :
     RecyclerView.Adapter<Adapter.ViewHolder>() {
 
 
@@ -39,27 +41,39 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
                 val tasksJson = taskFiles.readText()
 
-                val tasks: MutableList<Task> = gson.fromJson(tasksJson, object : TypeToken<MutableList<Task>>() {}.type)
+                val tasks: MutableList<Task> =
+                    gson.fromJson(tasksJson, object : TypeToken<MutableList<Task>>() {}.type)
 
 
                 val index = tasks.indexOfFirst { it.id == id }
 
 
+
+
                 if (index != -1) {
                     tasks.removeAt(index)
+
                 }
 
                 val newTasks = gson.toJson(tasks)
 
 
-                Log.i("tasks_id", index.toString())
-
-
+                updateTask(newTasks, taskFiles)
             }
 
 
         }
 
+        private fun updateTask(newTasks: String?, taskFiles: File) {
+
+            try {
+                FileWriter(taskFiles).use { writer ->
+                    writer.write(newTasks)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
 
 
     }

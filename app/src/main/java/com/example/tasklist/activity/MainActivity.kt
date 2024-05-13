@@ -63,7 +63,10 @@ class MainActivity : AppCompatActivity() {
 
     // configura recycler view  e o adapter para puxar do arquivo JSON
     private fun configRecyclerView() {
-        val adapter = Adapter(context = this, tasks = parseJson(getData()) )
+
+        val tasks = parseJson(getData()).toMutableList()
+
+        val adapter = Adapter(context = this, tasks = tasks )
         val recyclerView = findViewById<RecyclerView>(R.id.activity_recyclerView)
         recyclerView.adapter = adapter
     }
