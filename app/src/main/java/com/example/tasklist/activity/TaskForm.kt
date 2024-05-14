@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tasklist.R
 import com.example.tasklist.model.Task
+import com.example.tasklist.utils.parseFromJson
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
@@ -53,6 +54,8 @@ class TaskForm : AppCompatActivity() {
     }
 
 
+
+    //
     private fun saveData(task: Task) {
         val tasks = mutableListOf<Task>()
         val gson = Gson()
@@ -60,14 +63,17 @@ class TaskForm : AppCompatActivity() {
         val tasksFile = File(filesDir, "tasks.json")
 
         if (tasksFile.exists() && tasksFile.length() > 0) { // Verifica se o arquivo existe e não está vazio
-            val jsonTasks = tasksFile.readText()
-            tasks.addAll(gson.fromJson(jsonTasks, object : TypeToken<List<Task>>() {}.type))
+
+            val jsonTasks = tasksFile.readText()  // captura dados antigos
+
+            tasks.addAll(parseFromJson(jsonTasks)) // adiciona dados antigos a lista local
         }
 
-        tasks.add(task)
+        tasks.add(task) // adiciona novos dados a lista local
 
-        val jsonTasks = gson.toJson(tasks)
+        val jsonTasks = gson.toJson(tasks) // transforma a lista local em uma string JSON
 
+        // escreve dados atualizados no arquivo JSON
         try {
             FileWriter(tasksFile).use { writer ->
                 writer.write(jsonTasks)
@@ -75,8 +81,6 @@ class TaskForm : AppCompatActivity() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
-        Log.i("tasks_info", jsonTasks)
     }
 
 
