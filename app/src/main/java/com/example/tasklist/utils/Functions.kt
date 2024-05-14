@@ -45,3 +45,14 @@ fun addTask(task: Task, context: Context) {
         e.printStackTrace()
     }
 }
+
+fun updateTask(newTasks: String?, taskFiles: File) {
+
+    try {
+        FileWriter(taskFiles).use { writer ->
+            writer.write(newTasks)
+        }
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+}
