@@ -11,11 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
 import com.example.tasklist.model.Task
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
-import com.example.tasklist.utils.parseFromJson
 
 class Adapter(val tasks: List<Task>, private val context: Context) :
     RecyclerView.Adapter<Adapter.ViewHolder>() {
@@ -23,7 +21,7 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(task: Task, context: Context) {
+        fun bind(task: Task) {
             val name = itemView.findViewById<TextView>(R.id.task_name)
             val checked = itemView.findViewById<CheckBox>(R.id.task_checkbox)
             val deleteButton = itemView.findViewById<Button>(R.id.task_button)
@@ -36,11 +34,9 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
             name?.text = task.name
             checked?.isChecked = task.checked
 
-            deleteButton.setOnClickListener {
+            deleteButton.setOnClickListener { it ->
 
-
-
-                val taskFiles = File(context.filesDir, "tasks.json")
+                val taskFiles = File(it.context.filesDir, "tasks.json")
 
 
                 val tasksJson = taskFiles.readText()
@@ -50,12 +46,12 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
                 val index = tasks.indexOfFirst { it.id == id }
 
                 if (index != -1) {
-                    tasks.removeAt(index)
+                    tasks.removeAt(index) // remove task que foi selecionada
 
-                    val newTasks = gson.toJson(tasks)
+                    val newTasks = gson.toJson(tasks) // transforma em json
 
 
-                    writeTask(newTasks,taskFiles)
+                    updateTask(newTasks, taskFiles) // atualiza tasks
                 }
             }
 
@@ -63,17 +59,7 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
 
     }
-    fun writeTask(newTasks: String?, taskFiles: File) {
 
-        try {
-            FileWriter(taskFiles).use { writer ->
-                writer.write(newTasks)
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
-    }
 
 
 
@@ -92,7 +78,7 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val task = tasks[position]
-        holder.bind(task, context)
+        holder.bind(task)
     }
 
 
