@@ -1,6 +1,7 @@
 package com.example.tasklist.utils
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,6 @@ import com.example.tasklist.R
 import com.example.tasklist.model.Task
 import com.google.gson.Gson
 import java.io.File
-import java.io.FileWriter
-import java.io.IOException
 
 class Adapter(val tasks: List<Task>, private val context: Context) :
     RecyclerView.Adapter<Adapter.ViewHolder>() {
@@ -23,16 +22,14 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
         fun bind(task: Task) {
             val name = itemView.findViewById<TextView>(R.id.task_name)
-            val checked = itemView.findViewById<CheckBox>(R.id.task_checkbox)
+            val checkBox = itemView.findViewById<CheckBox>(R.id.task_checkbox)
             val deleteButton = itemView.findViewById<Button>(R.id.task_button)
             val id = task.id
 
             val gson = Gson()
 
-
-
             name?.text = task.name
-            checked?.isChecked = task.checked
+
 
             deleteButton.setOnClickListener { it ->
 
@@ -46,29 +43,35 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
                 val index = tasks.indexOfFirst { it.id == id }
 
                 if (index != -1) {
-                    tasks.removeAt(index) // remove task que foi selecionada
+                    tasks.removeAt(index)  // remove task que foi selecionada
 
                     val newTasks = gson.toJson(tasks) // transforma em json
 
 
-                    updateTask(newTasks, taskFiles) // atualiza tasks
+                    deleteTask(newTasks, taskFiles) // atualiza tasks
                 }
             }
 
+
+            checkBox.setOnClickListener {
+                val index = tasks.indexOfFirst { it.id == id }
+
+
+
+                tasks[index].checked = !tasks[index].checked // salva no JSON se está marcado ou não
+
+            }
+
+
+
+
         }
-
-
     }
-
-
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(context)
 
         val view = inflater.inflate(R.layout.task_item, parent, false)
-
 
         return ViewHolder(view)
 

@@ -38,6 +38,7 @@ fun addTask(task: Task, context: Context) {
     val jsonTasks = gson.toJson(tasks)
 
     try {
+
         FileWriter(tasksFile).use { writer -> // escreve no arquivo dados atualizados
             writer.write(jsonTasks)
         }
@@ -46,7 +47,7 @@ fun addTask(task: Task, context: Context) {
     }
 }
 
-fun updateTask(newTasks: String?, taskFiles: File) {
+fun deleteTask(newTasks: String?, taskFiles: File) {
 
     try {
         FileWriter(taskFiles).use { writer ->

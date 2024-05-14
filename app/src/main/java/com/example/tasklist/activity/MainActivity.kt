@@ -31,10 +31,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    // transforma a string JSON em uma List com o items do tipo Task
-
-
-
     // captura dados do arquivo .JSON
     private fun getData(): String {
         val tasksFile = File(filesDir, "tasks.json")
