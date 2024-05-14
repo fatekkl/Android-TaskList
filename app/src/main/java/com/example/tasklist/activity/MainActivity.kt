@@ -39,11 +39,11 @@ class MainActivity : AppCompatActivity() {
     private fun getData(): String {
         val tasksFile = File(filesDir, "tasks.json")
 
-        if (tasksFile.exists()) {
+        if (tasksFile.exists()) { // verifica se o arquivo existe
 
-            return tasksFile.readText()
+            return tasksFile.readText() // retorna conteúdo do arquivo
         }
-        return "[]"
+        return "[]" // retorna lista vazia, caso não tenha conteúdo
     }
 
 
@@ -58,13 +58,14 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    // configura floating action button para criação de tasks
     private fun configFab() {
         val fab = findViewById<FloatingActionButton>(R.id.activity_fab)
 
         fab.setOnClickListener {
-            val intent = Intent(this, TaskForm::class.java)
+            val intent = Intent(this, TaskForm::class.java) // captura activity que será iniciada
 
-            startActivity(intent)
+            startActivity(intent) // inicia activity
         }
     }
 
