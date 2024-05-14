@@ -1,15 +1,13 @@
 package com.example.tasklist.activity
 
-import com.example.tasklist.model.Task
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
+import com.example.tasklist.model.Task
 import com.example.tasklist.utils.Adapter
+import com.example.tasklist.utils.parseFromJson
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -24,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         configRecyclerView()
         configFab()
 
-
     }
 
 
@@ -35,17 +32,7 @@ class MainActivity : AppCompatActivity() {
 
 
     // transforma a string JSON em uma List com o items do tipo Task
-    private fun parseJson(input: String): List<Task> {
-        if (input.isEmpty()) {
-            return emptyList()
-        }
 
-        val gson = Gson()
-
-        val type = object : TypeToken<List<Task>>() {}.type
-
-        return gson.fromJson(input, type)
-    }
 
 
     // captura dados do arquivo .JSON
@@ -63,9 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     // configura recycler view  e o adapter para puxar do arquivo JSON
     private fun configRecyclerView() {
-
-        val tasks = parseJson(getData()).toMutableList()
-
+        val tasks = parseFromJson(getData())
         val adapter = Adapter(context = this, tasks = tasks )
         val recyclerView = findViewById<RecyclerView>(R.id.activity_recyclerView)
         recyclerView.adapter = adapter
@@ -73,8 +58,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
-    //adiciona funciolidade ao arquivo JSON
     private fun configFab() {
         val fab = findViewById<FloatingActionButton>(R.id.activity_fab)
 
