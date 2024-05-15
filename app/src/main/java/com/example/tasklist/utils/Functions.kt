@@ -3,6 +3,8 @@ package com.example.tasklist.utils
 import android.content.Context
 import android.util.Log
 import android.widget.CheckBox
+import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.model.Task
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -56,44 +58,60 @@ fun updateTasks(tasks: List<Task>, context: Context) {
 
     val jsonTasks = gson.toJson(tasks)
 
-    val tasksFile = File(context.filesDir, "tasks.json")
-
-    FileWriter(tasksFile).use { writer -> // escreve no arquivo dados atualizados
-        writer.write(jsonTasks)
-    }
-}
-fun deleteTask(newTasks: String?, taskFiles: File) {
-
     try {
-        FileWriter(taskFiles).use { writer ->
-            writer.write(newTasks)
+
+        val tasksFile = File(context.filesDir, "tasks.json")
+
+        FileWriter(tasksFile).use { writer -> // escreve no arquivo dados atualizados
+            writer.write(jsonTasks)
         }
     } catch (e: IOException) {
         e.printStackTrace()
     }
+
+}
+fun deleteTask(tasks: MutableList<Task>, index: Int, context: Context) {
+
+
+    if (index !== -1) {
+        tasks.removeAt(index)
+        updateTasks(tasks, context)
+    } else {
+        Toast.makeText(context, "no content to remove", Toast.LENGTH_SHORT).show()
+    }
+
 }
 
 fun updateJSONCheckbox(tasks: List<Task>, context: Context, id: UUID) {
 
-    val taskFiles = File(context.filesDir, "tasks.json")
+    try {
+        val index = tasks.indexOfFirst { it.id == id }
 
-    val index = tasks.indexOfFirst { it.id == id }
-
-    tasks[index].checked = !tasks[index].checked
+        tasks[index].checked = !tasks[index].checked
 
 
-    updateTasks(tasks, context)
+        updateTasks(tasks, context)
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+
+
 }
 
 fun updateUICheckbox(checkBox: CheckBox, id: UUID, context: Context) {
 
-    val tasksFile = File(context.filesDir, "tasks.json")
+    try {
+        val tasksFile = File(context.filesDir, "tasks.json")
+        val tasks = parseFromJson(tasksFile.readText())
 
-    val tasks = parseFromJson(tasksFile.readText())
+        val task = getTask(tasks, id)
 
-    val task = getTask(tasks, id)
+        checkBox.isChecked = task.checked
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
 
-    checkBox.isChecked = task.checked
+
 }
 
 fun getTask(tasks: List<Task>, id: UUID): Task {
@@ -101,3 +119,4 @@ fun getTask(tasks: List<Task>, id: UUID): Task {
 
     return tasks[index]
 }
+

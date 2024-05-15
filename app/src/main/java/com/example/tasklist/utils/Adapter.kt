@@ -24,9 +24,10 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
             val name = itemView.findViewById<TextView>(R.id.task_name)
             val checkBox = itemView.findViewById<CheckBox>(R.id.task_checkbox)
             val deleteButton = itemView.findViewById<Button>(R.id.task_button)
-            val id = task.id
 
-            val gson = Gson()
+
+
+            val id = task.id
 
             name?.text = task.name
 
@@ -34,32 +35,28 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
             //arrumar atualização da interface quando deletado
             deleteButton.setOnClickListener { it ->
-
                 val taskFiles = File(it.context.filesDir, "tasks.json")
-
-
                 val tasksJson = taskFiles.readText()
-
-                val tasks: MutableList<Task> = parseFromJson(tasksJson).toMutableList()
+                val tasks = parseFromJson(tasksJson).toMutableList()
 
                 val index = tasks.indexOfFirst { it.id == id }
 
-                if (index != -1) {
-                    tasks.removeAt(index)  // remove task que foi selecionada
-
-                    val newTasks = gson.toJson(tasks) // transforma em json
-
-
-                    deleteTask(newTasks, taskFiles) // atualiza tasks
-                }
+                deleteTask(tasks, index, context)
             }
 
 
             checkBox.setOnClickListener {
                 updateJSONCheckbox(tasks, context, id) // salva no JSON se está marcado ou não
             }
+
+
+
             // como opção posso chamar um metódo para atualizar a UI
             updateUICheckbox(checkBox, id, context)
+
+
+
+
         }
     }
 
