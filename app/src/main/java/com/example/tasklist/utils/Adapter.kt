@@ -30,7 +30,6 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
             name?.text = task.name
 
-
             deleteButton.setOnClickListener { it ->
 
                 val taskFiles = File(it.context.filesDir, "tasks.json")
@@ -54,17 +53,11 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
 
             checkBox.setOnClickListener {
-                val index = tasks.indexOfFirst { it.id == id }
 
-
-
-                tasks[index].checked = !tasks[index].checked // salva no JSON se está marcado ou não
-
+                updateJSONCheckbox(tasks, context, id) // salva no JSON se está marcado ou não
             }
 
-
-
-
+            updateUICheckbox(checkBox, tasks, id)
         }
     }
 
@@ -83,7 +76,6 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
         val task = tasks[position]
         holder.bind(task)
     }
-
 
 
 }

@@ -1,12 +1,15 @@
 package com.example.tasklist.utils
 
 import android.content.Context
+import android.util.Log
+import android.widget.CheckBox
 import com.example.tasklist.model.Task
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
+import java.util.UUID
 
 fun parseFromJson(input: String): List<Task> {
     if (input.isEmpty()) {
@@ -56,4 +59,23 @@ fun deleteTask(newTasks: String?, taskFiles: File) {
     } catch (e: IOException) {
         e.printStackTrace()
     }
+}
+
+
+fun updateJSONCheckbox(tasks: List<Task>, context: Context, id: UUID) {
+   // implementar atualização no JSON primeiro, depois fazer com que updateUICheckbox puxe do JSON, atualmente ele só está salvando na memoria local
+}
+
+fun updateUICheckbox(checkBox: CheckBox, tasks: List<Task>, id: UUID) {
+
+    val task = getTask(tasks, id)
+
+    checkBox.isChecked = task.checked
+    Log.i("tasks_updateUI", "chamou")
+}
+
+fun getTask(tasks: List<Task>, id: UUID): Task {
+    val index = tasks.indexOfFirst { it.id == id }
+
+    return tasks[index]
 }
