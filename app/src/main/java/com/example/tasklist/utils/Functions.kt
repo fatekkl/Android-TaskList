@@ -50,6 +50,19 @@ fun addTask(task: Task, context: Context) {
     }
 }
 
+
+fun updateTasks(tasks: List<Task>, context: Context) {
+
+    val gson = Gson()
+
+    val jsonTasks = gson.toJson(tasks)
+
+    val tasksFile = File(context.filesDir, "tasks.json")
+
+    FileWriter(tasksFile).use { writer -> // escreve no arquivo dados atualizados
+        writer.write(jsonTasks)
+    }
+}
 fun deleteTask(newTasks: String?, taskFiles: File) {
 
     try {
@@ -63,10 +76,25 @@ fun deleteTask(newTasks: String?, taskFiles: File) {
 
 
 fun updateJSONCheckbox(tasks: List<Task>, context: Context, id: UUID) {
-   // implementar atualização no JSON primeiro, depois fazer com que updateUICheckbox puxe do JSON, atualmente ele só está salvando na memoria local
+
+    val taskFiles = File(context.filesDir, "tasks.json")
+
+    val index = tasks.indexOfFirst { it.id == id }
+
+    tasks[index].checked = !tasks[index].checked
+
+
+    updateTasks(tasks, context)
+
+    Log.i("tasks_teste", tasks.toString())
+    Log.i("tasks_teste", taskFiles.readText())
 }
 
-fun updateUICheckbox(checkBox: CheckBox, tasks: List<Task>, id: UUID) {
+fun updateUICheckbox(checkBox: CheckBox, id: UUID, context: Context) {
+
+    val tasksFile = File(context.filesDir, "tasks.json")
+
+    val tasks = parseFromJson(tasksFile.readText())
 
     val task = getTask(tasks, id)
 

@@ -57,7 +57,7 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
                 updateJSONCheckbox(tasks, context, id) // salva no JSON se está marcado ou não
             }
 
-            updateUICheckbox(checkBox, tasks, id)
+            updateUICheckbox(checkBox,id, context)
         }
     }
 
