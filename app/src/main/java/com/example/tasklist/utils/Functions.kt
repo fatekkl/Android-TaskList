@@ -50,7 +50,6 @@ fun addTask(task: Task, context: Context) {
     }
 }
 
-
 fun updateTasks(tasks: List<Task>, context: Context) {
 
     val gson = Gson()
@@ -74,7 +73,6 @@ fun deleteTask(newTasks: String?, taskFiles: File) {
     }
 }
 
-
 fun updateJSONCheckbox(tasks: List<Task>, context: Context, id: UUID) {
 
     val taskFiles = File(context.filesDir, "tasks.json")
@@ -85,9 +83,6 @@ fun updateJSONCheckbox(tasks: List<Task>, context: Context, id: UUID) {
 
 
     updateTasks(tasks, context)
-
-    Log.i("tasks_teste", tasks.toString())
-    Log.i("tasks_teste", taskFiles.readText())
 }
 
 fun updateUICheckbox(checkBox: CheckBox, id: UUID, context: Context) {
@@ -99,7 +94,6 @@ fun updateUICheckbox(checkBox: CheckBox, id: UUID, context: Context) {
     val task = getTask(tasks, id)
 
     checkBox.isChecked = task.checked
-    Log.i("tasks_updateUI", "chamou")
 }
 
 fun getTask(tasks: List<Task>, id: UUID): Task {

@@ -30,6 +30,9 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
             name?.text = task.name
 
+
+
+            //arrumar atualização da interface quando deletado
             deleteButton.setOnClickListener { it ->
 
                 val taskFiles = File(it.context.filesDir, "tasks.json")
@@ -53,11 +56,10 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
 
             checkBox.setOnClickListener {
-
                 updateJSONCheckbox(tasks, context, id) // salva no JSON se está marcado ou não
             }
-
-            updateUICheckbox(checkBox,id, context)
+            // como opção posso chamar um metódo para atualizar a UI
+            updateUICheckbox(checkBox, id, context)
         }
     }
 
