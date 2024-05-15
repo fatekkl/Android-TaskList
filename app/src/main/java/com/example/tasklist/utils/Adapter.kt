@@ -1,6 +1,8 @@
 package com.example.tasklist.utils
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,8 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
+import com.example.tasklist.activity.MainActivity
+import com.example.tasklist.activity.TaskForm
 import com.example.tasklist.model.Task
 import com.google.gson.Gson
 import java.io.File
@@ -24,14 +28,9 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
             val name = itemView.findViewById<TextView>(R.id.task_name)
             val checkBox = itemView.findViewById<CheckBox>(R.id.task_checkbox)
             val deleteButton = itemView.findViewById<Button>(R.id.task_button)
-
-
-
             val id = task.id
 
             name?.text = task.name
-
-
 
             //arrumar atualização da interface quando deletado
             deleteButton.setOnClickListener { it ->
@@ -42,6 +41,14 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
                 val index = tasks.indexOfFirst { it.id == id }
 
                 deleteTask(tasks, index, context)
+
+
+                // gambiarra fudida pra dar refresh e manter tasks atualizadas
+                (context as Activity).finish()
+
+                val intent = Intent(context, MainActivity::class.java)
+
+                context.startActivity(intent)
             }
 
 
@@ -49,14 +56,7 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
                 updateJSONCheckbox(tasks, context, id) // salva no JSON se está marcado ou não
             }
 
-
-
-            // como opção posso chamar um metódo para atualizar a UI
-            updateUICheckbox(checkBox, id, context)
-
-
-
-
+            setCheckbox(checkBox, id, context)
         }
     }
 

@@ -1,10 +1,8 @@
 package com.example.tasklist.utils
 
 import android.content.Context
-import android.util.Log
 import android.widget.CheckBox
 import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.model.Task
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -70,14 +68,21 @@ fun updateTasks(tasks: List<Task>, context: Context) {
     }
 
 }
+
 fun deleteTask(tasks: MutableList<Task>, index: Int, context: Context) {
 
 
-    if (index !== -1) {
-        tasks.removeAt(index)
-        updateTasks(tasks, context)
-    } else {
-        Toast.makeText(context, "no content to remove", Toast.LENGTH_SHORT).show()
+    try {
+
+        if (index != -1) {
+            tasks.removeAt(index)
+            updateTasks(tasks, context)
+        }
+
+
+    } catch (e: IOException) {
+        e.printStackTrace()
+        Toast.makeText(context, "deu ruim viado", Toast.LENGTH_SHORT).show()
     }
 
 }
@@ -98,7 +103,7 @@ fun updateJSONCheckbox(tasks: List<Task>, context: Context, id: UUID) {
 
 }
 
-fun updateUICheckbox(checkBox: CheckBox, id: UUID, context: Context) {
+fun setCheckbox(checkBox: CheckBox, id: UUID, context: Context) {
 
     try {
         val tasksFile = File(context.filesDir, "tasks.json")
@@ -106,7 +111,8 @@ fun updateUICheckbox(checkBox: CheckBox, id: UUID, context: Context) {
 
         val task = getTask(tasks, id)
 
-        checkBox.isChecked = task.checked
+        if (task != null) checkBox.isChecked = task.checked
+
     } catch (e: IOException) {
         e.printStackTrace()
     }
@@ -114,9 +120,8 @@ fun updateUICheckbox(checkBox: CheckBox, id: UUID, context: Context) {
 
 }
 
-fun getTask(tasks: List<Task>, id: UUID): Task {
-    val index = tasks.indexOfFirst { it.id == id }
+fun getTask(tasks: List<Task>, id: UUID): Task? {
 
-    return tasks[index]
+    return tasks.find { it.id == id }
 }
 
