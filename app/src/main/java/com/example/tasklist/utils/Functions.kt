@@ -1,11 +1,7 @@
 package com.example.tasklist.utils
 
 import android.content.Context
-import android.util.Log
-import android.widget.CheckBox
-import android.widget.TextView
 import android.widget.Toast
-import com.example.tasklist.R
 import com.example.tasklist.model.Task
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -43,8 +39,8 @@ fun addTask(task: Task, context: Context) {
 
     val jsonTasks = gson.toJson(tasks)
 
-    try {
 
+    try {
         FileWriter(tasksFile).use { writer -> // escreve no arquivo dados atualizados
             writer.write(jsonTasks)
         }
@@ -60,7 +56,6 @@ fun updateTasks(tasks: List<Task>, context: Context) {
     val jsonTasks = gson.toJson(tasks)
 
     try {
-
         val tasksFile = File(context.filesDir, "tasks.json")
 
         FileWriter(tasksFile).use { writer -> // escreve no arquivo dados atualizados
@@ -72,13 +67,11 @@ fun updateTasks(tasks: List<Task>, context: Context) {
 
 }
 
-fun deleteTask(tasks: MutableList<Task>, index: Int, context: Context) {
-
+fun excludeTask(tasks: MutableList<Task>, position: Int, context: Context) {
 
     try {
-
-        if (index != -1) {
-            tasks.removeAt(index)
+        if (position != -1) {
+            tasks.removeAt(position)
             updateTasks(tasks, context)
         }
 
@@ -97,27 +90,7 @@ fun updateJSONCheckbox(tasks: List<Task>, context: Context, id: UUID) {
 
         tasks[index].checked = !tasks[index].checked
 
-
         updateTasks(tasks, context)
-    } catch (e: IOException) {
-        e.printStackTrace()
-    }
-
-
-}
-
-fun setCheckbox(checkBox: CheckBox, id: UUID, context: Context) {
-
-    try {
-        val tasksFile = File(context.filesDir, "tasks.json")
-        val tasks = parseFromJson(tasksFile.readText())
-
-        val task = getTask(tasks, id)
-
-        if (task != null) checkBox.isChecked = task.checked
-
-
-
     } catch (e: IOException) {
         e.printStackTrace()
     }
@@ -129,4 +102,3 @@ fun getTask(tasks: List<Task>, id: UUID): Task? {
 
     return tasks.find { it.id == id }
 }
-

@@ -2,16 +2,13 @@ package com.example.tasklist.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.forEach
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
-import com.example.tasklist.model.Task
 import com.example.tasklist.utils.Adapter
 import com.example.tasklist.utils.parseFromJson
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +25,10 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         configRecyclerView()
+    }
+
+    override fun onContentChanged() {
+        Log.i("tasks_test", "boaaa")
     }
 
 
@@ -48,11 +49,12 @@ class MainActivity : AppCompatActivity() {
     // configura recycler view  e o adapter para puxar do arquivo JSON
     private fun configRecyclerView() {
         val tasks = parseFromJson(getData())
-        val adapter = Adapter(context = this, tasks = tasks )
+        val adapter = Adapter(tasks = tasks, context = this)
         val recyclerView = findViewById<RecyclerView>(R.id.activity_recyclerView)
         recyclerView.adapter = adapter
 
     }
+
 
 
 
@@ -71,5 +73,3 @@ class MainActivity : AppCompatActivity() {
 
 
 }
-
-

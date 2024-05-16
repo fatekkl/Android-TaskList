@@ -29,29 +29,26 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
             name?.text = task.name
 
             //arrumar atualização da interface quando deletado
-            deleteButton.setOnClickListener { it ->
-                val index = tasks.indexOfFirst { it.id == id }
+            deleteButton.setOnClickListener {
+                excludeTask(tasks.toMutableList(), adapterPosition, context)
 
-                deleteTask(tasks.toMutableList(), index, context)
-
-                // gambiarra fudida pra dar refresh e manter tasks atualizadas
-//                (context as Activity).finish()
-//
-//                val intent = Intent(context, MainActivity::class.java)
-//
-//                context.startActivity(intent)
             }
 
 
             checkBox.setOnClickListener {
                 updateJSONCheckbox(tasks, context, id) // salva no JSON se está marcado ou não
-            }
-
-            setCheckbox(checkBox, id, context)
-            if (checkBox.isChecked) {
-                container.setBackgroundColor(ContextCompat.getColor(context, R.color.gray))
 
             }
+
+            if (getTask(tasks, id) != null) {
+                checkBox.isChecked = getTask(tasks, id)!!.checked // define a checkbox como checada quando a activity inicia
+
+                if (checkBox.isChecked) {
+                    container.setBackgroundColor(ContextCompat.getColor(context, R.color.gray)) // colore o fundo
+                }
+            }
+
+
 
         }
     }
@@ -67,10 +64,14 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
     override fun getItemCount(): Int = tasks.size
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val task = tasks[position]
         holder.bind(task)
     }
+
+
+
 
 
 }
