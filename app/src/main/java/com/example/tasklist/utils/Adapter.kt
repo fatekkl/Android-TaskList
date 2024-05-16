@@ -1,9 +1,6 @@
 package com.example.tasklist.utils
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
-import com.example.tasklist.activity.MainActivity
-import com.example.tasklist.activity.TaskForm
 import com.example.tasklist.model.Task
-import com.google.gson.Gson
-import java.io.File
 
 class Adapter(val tasks: List<Task>, private val context: Context) :
     RecyclerView.Adapter<Adapter.ViewHolder>() {
@@ -37,21 +30,16 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
             //arrumar atualização da interface quando deletado
             deleteButton.setOnClickListener { it ->
-                val taskFiles = File(it.context.filesDir, "tasks.json")
-                val tasksJson = taskFiles.readText()
-                val tasks = parseFromJson(tasksJson).toMutableList()
-
                 val index = tasks.indexOfFirst { it.id == id }
 
-                deleteTask(tasks, index, context)
-
+                deleteTask(tasks.toMutableList(), index, context)
 
                 // gambiarra fudida pra dar refresh e manter tasks atualizadas
-                (context as Activity).finish()
-
-                val intent = Intent(context, MainActivity::class.java)
-
-                context.startActivity(intent)
+//                (context as Activity).finish()
+//
+//                val intent = Intent(context, MainActivity::class.java)
+//
+//                context.startActivity(intent)
             }
 
 
