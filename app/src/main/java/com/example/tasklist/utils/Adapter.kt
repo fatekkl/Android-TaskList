@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
 import com.example.tasklist.activity.MainActivity
@@ -28,6 +30,7 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
             val name = itemView.findViewById<TextView>(R.id.task_name)
             val checkBox = itemView.findViewById<CheckBox>(R.id.task_checkbox)
             val deleteButton = itemView.findViewById<Button>(R.id.task_button)
+            val container = itemView.findViewById<ConstraintLayout>(R.id.task_container)
             val id = task.id
 
             name?.text = task.name
@@ -57,6 +60,11 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
             }
 
             setCheckbox(checkBox, id, context)
+            if (checkBox.isChecked) {
+                container.setBackgroundColor(ContextCompat.getColor(context, R.color.gray))
+
+            }
+
         }
     }
 

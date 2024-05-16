@@ -1,8 +1,11 @@
 package com.example.tasklist.utils
 
 import android.content.Context
+import android.util.Log
 import android.widget.CheckBox
+import android.widget.TextView
 import android.widget.Toast
+import com.example.tasklist.R
 import com.example.tasklist.model.Task
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -112,6 +115,8 @@ fun setCheckbox(checkBox: CheckBox, id: UUID, context: Context) {
         val task = getTask(tasks, id)
 
         if (task != null) checkBox.isChecked = task.checked
+
+
 
     } catch (e: IOException) {
         e.printStackTrace()
