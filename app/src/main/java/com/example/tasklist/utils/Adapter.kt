@@ -1,6 +1,8 @@
 package com.example.tasklist.utils
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
+import com.example.tasklist.activity.MainActivity
 import com.example.tasklist.model.Task
 
 class Adapter(val tasks: List<Task>, private val context: Context) :
@@ -32,6 +35,12 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
             deleteButton.setOnClickListener {
                 excludeTask(tasks.toMutableList(), adapterPosition, context)
 
+
+                (context as Activity).finish()
+
+                val intent = Intent(context, MainActivity::class.java)
+
+                context.startActivity(intent)
             }
 
 
@@ -40,6 +49,8 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
             }
 
+
+
             if (getTask(tasks, id) != null) {
                 checkBox.isChecked = getTask(tasks, id)!!.checked // define a checkbox como checada quando a activity inicia
 
@@ -47,6 +58,8 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
                     container.setBackgroundColor(ContextCompat.getColor(context, R.color.gray)) // colore o fundo
                 }
             }
+
+
 
 
 
