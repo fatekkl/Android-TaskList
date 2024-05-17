@@ -31,7 +31,6 @@ class Adapter(val tasks: List<Task>, private val context: Context) :
 
             name?.text = task.name
 
-            //arrumar atualização da interface quando deletado
             deleteButton.setOnClickListener {
                 excludeTask(tasks.toMutableList(), adapterPosition, context)
 

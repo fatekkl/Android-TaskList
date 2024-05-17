@@ -99,6 +99,5 @@ fun updateJSONCheckbox(tasks: List<Task>, context: Context, id: UUID) {
 }
 
 fun getTask(tasks: List<Task>, id: UUID): Task? {
-
     return tasks.find { it.id == id }
 }

@@ -27,10 +27,6 @@ class MainActivity : AppCompatActivity() {
         configRecyclerView()
     }
 
-    override fun onContentChanged() {
-        Log.i("tasks_test", "boaaa")
-    }
-
 
     // captura dados do arquivo .JSON
     private fun getData(): String {
